@@ -1,0 +1,194 @@
+<div class="container">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <h1>Acompanhamento de parcelas</h1>
+    </div>
+  </div>
+
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-6 ui-fluid">
+      <label>Cliente</label>
+      <input pInputText  [(ngModel)]="filtro.cliente" type="text"/>
+    </div>
+    <div class="ui-g-12 ui-md-4 ui-fluid form-group">
+      <label>Receber na conta</label>
+      <p-dropdown [options]="contas" name="contaR" [(ngModel)]="filtro.idConta"  placeholder="Selecione"></p-dropdown>
+  </div>
+
+  </div>
+
+  <div class="ui-g">
+    <div class="ui-g-12">
+        <label style="display: block">Vencimento</label>
+        <p-calendar [(ngModel)]="inicio" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+        <label style="margin-left: 5px; margin-right: 5px">até</label>
+        <p-calendar [(ngModel)]="fim" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+        <label style="margin-left: 5px; margin-right: 5px"></label>
+        <p-dropdown [options]="status" [(ngModel)]="sta" placeholder="Status"></p-dropdown>
+        <button pButton label="Pesquisar" (click)="pesquisar()" class="ui-button-success" style="margin-left: 10px"></button>
+        <label style="margin-left: 15px"> R$</label>
+        <input pInputText  [(ngModel)]="total"  style="margin-left: 10px; width: 80px" [disabled]="true" type="text"/>
+      </div>
+   </div>
+
+
+   <div class="ui-g" >
+      <div class="ui-g-12">
+        <p-table [value]="parcelas" [responsive]="true">
+            <ng-template pTemplate="header">
+              <tr>
+                  <th style="text-align: center;  width: 60px;">Número</th>
+                  <th style="text-align: left;  width: 200px;">Cliente</th>
+                  <th style="text-align: left;  width: 100px;">Conta</th>
+                  <th style="text-align: center;  width: 80px;">Valor</th>
+                  <th style="text-align: center;  width: 100px;">Vencimento</th>
+                  <th style="text-align: center;  width: 100px;">Recebimento</th>
+                  <th style="text-align: center;  width: 100px;">Status</th>
+                  <th style="text-align: center;  width: 80px;"></th>
+                  <th style="text-align: center;  width: 80px;"></th>
+                  <th style="text-align: center;  width: 80px;">Empréstimo</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-p>
+                <tr>
+                    <td style="text-align: center;  width: 60px;">{{p.numero}}</td>
+                    <td style="text-align: left;  width: 200px;">
+                      <a   href="javascript:;" (click)="exibeEndereco(p.idCliente)">{{p.cliente}}</a>
+                    </td>
+                    <td style="text-align: left;  width: 100px;">{{p.nomeConta}}</td>
+                    <td style="text-align: center;  width: 80px;">{{p.valorPrevisto}}</td>
+                    <td style="text-align: center;  width: 100px;">{{p.vencimento}}</td>
+                    <td style="text-align: center;  width: 100px;">{{p.recebimento}}</td>
+                    <td style="text-align: center;  width: 100px;" [style.color]="p.status === 'Fechado' ? 'blue' : 'red'"  >{{p.status}}</td>
+                    <td>
+                    <div style="text-align: center;" >
+                      <a   href="javascript:;" (click)="confirmaRecebe(p)"> {{ p.idStatus == 1 ? 'Receber' :  p.idStatus == 3 || p.idStatus == 8 ? 'Desfazer' : '' }}</a>
+                    </div>
+                    </td>
+                    <td>
+                      <div style="text-align: center;" >
+                        <a href="javascript:;" (click)="criaRenegociarParcela(p)" style="color: red">{{ p.idStatus == 1 ? 'Renegociar' : '' }}</a>
+                      </div>
+                    </td>
+
+                    <td>
+                      <div style="text-align: center;" >
+                        <a href="javascript:;"  style="color: red" [routerLink]="['/emprestimo', p.idEmprestimo]">Ir</a>
+                      </div>
+                    </td>
+
+                  </tr>
+            </ng-template>
+        </p-table>
+      </div>
+    </div>
+</div>
+
+
+<p-dialog header="Confirmar ação" [(visible)]="exibirFormConfirmacao" modal="modal"
+[style]="{width: '400px', height: '300px'}">
+  <form #frmConfirmar="ngForm">
+
+      <div class="ui-g-12 ui-fluid form-group" style="margin-left: 0">
+        <label> {{mensagemConfirmacao}} </label>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+         <br> <br>
+         <div class="ui-g-4 ui-fluid">
+            <button pButton type="submit" label="Sim" (click)="confirmaRecebeParcela('Sim')" class="ui-button-success"></button>
+         </div>
+         <div class="ui-g-4 ui-fluid">
+            <button pButton type="submit" label="Não" (click)="confirmaRecebeParcela('Nao')" class="ui-button-danger"></button>
+         </div>
+      </div>
+  </form>
+</p-dialog>
+
+<p-dialog header="Atenção" [(visible)]="exibirDialogoContaNaoInformada" modal="modal"
+[style]="{width: '400px', height: '300px'}">
+
+      <div class="ui-g-12 ui-fluid form-group" style="margin-left: 0">
+        <label> Você deve informar a conta em que a parcela será recebida! </label>
+        <br> <br>
+      </div>
+
+      <div class="ui-g-4 ui-fluid">
+        <button pButton type="submit" label="OK" (click)="fechaDialogoContaNaoInformda()" class="ui-button-danger"></button>
+      </div>
+
+</p-dialog>
+
+
+<p-dialog header="Renegociar parcela" [(visible)]="exibirFormRenegociar" modal="modal"
+[style]="{width: '600px', height: '800px'}">
+  <form #frmRenegociar="ngForm">
+
+      <div class="ui-g-12 ui-md-6 ui-fluid form-group" style="margin-left: 0">
+        <label>Valor recebido</label>
+        <input pInputText [(ngModel)]="renegociar.jurosRecebido"  name="valorR" type="text" placeholder="0,00" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }"/>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid form-group">
+          <label>Receber na conta</label>
+          <p-dropdown [options]="contas" name="contaR" [(ngModel)]="renegociar.idConta"  placeholder="Selecione"></p-dropdown>
+      </div>
+
+    <div class="ui-g-6 ui-fluid form-group">
+      <label>Nova data</label>
+      <p-calendar [(ngModel)]="renegociar.proximoVencimento" name= "dataR" dateFormat="dd/mm/yy"  [showIcon]="true" ></p-calendar>
+    </div>
+
+    <div class="ui-g-6 ui-fluid form-group">
+      <label>Novo valor da parcela</label>
+      <input pInputText [(ngModel)]="renegociar.novoValorParcela"  name="novoValorR" type="text" placeholder="0,00" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }"/>
+    </div>
+
+    <div class="ui-g-12 ui-md-12 ui-fluid">
+      <label>Observação</label>
+      <textarea pInputTextarea rows="5" cols="30" name="observacao"  [(ngModel)]="renegociar.observacao"></textarea>
+    </div>
+
+      <div class="ui-g-6 ui-fluid">
+         <br> <br>
+         <button pButton type="submit" label="Renegociar" (click)="renegociarP()" ></button>
+      </div>
+  </form>
+</p-dialog>
+
+<p-dialog header="Informações do cliente" [(visible)]="exibirFormEnderecos" modal="modal"
+[style]="{width: '600px', height: '800px'}">
+  <form #frmEnde="ngForm">
+
+          <div class="ui-g-12 ui-md-12 ui-fluid">
+              <label>Endereço</label>
+            <textarea pInputTextarea rows="2" cols="30" name="end"  [(ngModel)]="enderecoContato.endereco"></textarea>
+          </div>
+
+            <div class="ui-g-12 ui-md-12 ui-fluid">
+                <label>Contato</label>
+              <textarea pInputTextarea rows="2" cols="30" name="con"  [(ngModel)]="enderecoContato.contato"></textarea>
+            </div>
+
+        <!-- <p-table [value]="enderecos" [responsive]="true">
+            <ng-template pTemplate="header">
+              <tr>
+                  <th>Tipo</th>
+                  <th>Endereço</th>
+                  <th>Contato</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-e>
+                <tr style="text-align: center">
+                    <td>{{e.tipo}}</td>
+                    <td>{{e.resumo}}</td>
+                    <td>{{e.resumoContato}}</td>
+                  </tr>
+            </ng-template>
+        </p-table> -->
+
+  </form>
+</p-dialog>
+
+
+
+

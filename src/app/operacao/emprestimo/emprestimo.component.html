@@ -1,0 +1,181 @@
+<div class="container">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <h1>Emprestimos</h1>
+    </div>
+  </div>
+
+  <form #emprestimoForm="ngForm" >
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <div class="ui-g-12 ui-md-3 ui-fluid form-group">
+            <label>Cliente</label>
+            <p-dropdown [options]="clientes" name="cliente" [(ngModel)]="emprestimo.cliente.id" placeholder="Selecione" [disabled]="!empretimoAberto()"></p-dropdown>
+        </div>
+
+        <div class="ui-g-12 ui-md-2 ui-fluid form-group">
+            <label>Data</label>
+            <p-calendar [(ngModel)]="emprestimo.dataOperacao" name= "data" dateFormat="dd/mm/yy"  (blur)="exibirParcelas()" [showIcon]="true" [disabled]="!empretimoAberto()"></p-calendar>
+        </div>
+
+        <div class="ui-g-12 ui-md-2 ui-fluid form-group">
+            <label>Valor</label>
+            <input pInputText [(ngModel)]="emprestimo.valor"  name="valor" (blur)="atualizarJuros()" type="text" placeholder="0,00" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }" [disabled]="!empretimoAberto()"/>
+        </div>
+
+        <div class="ui-g-12 ui-md-2 ui-fluid form-group">
+            <label>Quant. parcelas</label>
+            <input [(ngModel)]="emprestimo.quantParcelas" name="quantP" pInputText (blur)="exibirParcelas()" type="text" [disabled]="!empretimoAberto()"/>
+        </div>
+
+        <div class="ui-g-12 ui-md-2 ui-fluid form-group">
+            <label>Dias entre parcelas</label>
+            <input [(ngModel)]="emprestimo.intervaloEntreParcelas" name="diasEntreP" pInputText (blur)="exibirParcelas()" type="text" [disabled]="!empretimoAberto()"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui-g">
+        <div class="ui-g-12">
+
+            <div class="ui-g-12 ui-md-3 ui-fluid form-group">
+                <label>Conta</label>
+                <p-dropdown [options]="contas" name="conta" [(ngModel)]="emprestimo.conta.id"  placeholder="Selecione" [disabled]="!empretimoAberto()"></p-dropdown>
+            </div>
+
+          <div class="ui-g-12 ui-md-2 ui-fluid form-group">
+              <label>Juros-valor</label>
+              <input pInputText [(ngModel)]="emprestimo.jurosValor"  name="jurosVal"  (blur)="calcularJurosPercentual()"  disabled="{{this.emprestimo.valor==null || !empretimoAberto()}}" type="text" placeholder="0,00"  currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }"/>
+          </div>
+
+          <div class="ui-g-12 ui-md-2 ui-fluid form-group">
+              <label>Juros-percentual - %</label>
+              <input pInputText [(ngModel)]="emprestimo.jurosPercentual" name="jurosPercent"  (blur)="calcularJurosValor()" disabled="{{this.emprestimo.valor==null || !empretimoAberto()}}"type="text" placeholder="0,00" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }"/>
+          </div>
+
+          <div class="ui-g-12 ui-md-2 ui-fluid form-group">
+              <label>Status</label>
+              <input pInputText [(ngModel)]="emprestimo.status.nome"  name="status" type="text" disabled=true />
+          </div>
+
+          <div class="ui-g-12 ui-md-1 ui-fluid">
+              <br>
+              <button pButton  label="Novo" (click)="inicio(0)"></button>
+          </div>
+
+          <div class="ui-g-12 ui-md-1 ui-fluid">
+            <br>
+            <button pButton type="submit" label="Salvar" (click)="adicionar()" [disabled]="!empretimoAberto()"></button>
+        </div>
+
+        <div class="ui-g-12 ui-md-1 ui-fluid">
+            <br>
+            <a pButton style="margin-left: 10px" label="Pesquisar" class="ui-button-secondary" [routerLink]="['/acompanhaEmprestimo']"></a>
+        </div>
+
+
+        </div>
+    </div>
+  </form>
+
+  <div class="ui-g" >
+      <div class="ui-g-12">
+        <p-table [value]="emprestimo.parcelas" [responsive]="true">
+            <ng-template pTemplate="header">
+              <tr>
+                  <th class="codigoHeader">Número</th>
+                  <th>Conta</th>
+                  <th>Valor</th>
+                  <th>Vencimento</th>
+                  <th>Recebimento</th>
+                  <th>Status</th>
+                  <th style="text-align: center;  width: 80px;"></th>
+                  <th style="text-align: center;  width: 90px;"></th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-p>
+                <tr>
+                    <td class="codigoCampo">{{p.numero}}</td>
+                    <td style="text-align: center">{{p.conta.nome}}</td>
+                    <td style="text-align: center">{{p.valorPrevisto}}</td>
+                    <td style="text-align: center">{{p.vencimento}}</td>
+                    <td style="text-align: center">{{p.recebimento}}</td>
+                    <td style="text-align: center">{{p.status.nome}}</td>
+                    <td>
+                      <div style="text-align: center;" >
+                        <a   href="javascript:;" (click)="confirmaRecebe(p)"> {{ p.status.nome == 'Aberto' ? 'Receber' : p.status.nome == 'Fechado' || p.status.nome == 'Renegociado' ? 'Desfazer' : '' }}</a>
+                      </div>
+                    </td>
+                    <td>
+                      <div style="text-align: center;" >
+                        <a href="javascript:;" (click)="criaRenegociarParcela(p)" style="color: red">{{ p.status.nome == 'Aberto' ? 'Renegociar' : '' }}</a>
+                      </div>
+                    </td>
+                  </tr>
+            </ng-template>
+        </p-table>
+      </div>
+    </div>
+</div>
+
+<p-dialog header="Renegociar parcela" [(visible)]="exibirFormRenegociar" modal="modal"
+[style]="{width: '600px', height: '400px'}">
+  <form #frmRenegociar="ngForm">
+
+      <div class="ui-g-12 ui-md-6 ui-fluid form-group" style="margin-left: 0">
+        <label>Valor recebido</label>
+        <input pInputText [(ngModel)]="renegociar.jurosRecebido"  name="valorR" type="text" placeholder="0,00" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }"/>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid form-group">
+          <label>Receber na conta</label>
+          <p-dropdown [options]="contas" name="contaR" [(ngModel)]="renegociar.idConta"  placeholder="Selecione"></p-dropdown>
+      </div>
+
+    <div class="ui-g-6 ui-fluid form-group">
+      <label>Nova data</label>
+      <p-calendar [(ngModel)]="renegociar.proximoVencimento" name= "dataR" dateFormat="dd/mm/yy"  [showIcon]="true" ></p-calendar>
+    </div>
+
+    <div class="ui-g-6 ui-fluid form-group">
+      <label>Novo valor da parcela</label>
+      <input pInputText [(ngModel)]="renegociar.novoValorParcela"  name="novoValorR" type="text" placeholder="0,00" currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }"/>
+    </div>
+
+    <div class="ui-g-12 ui-md-12 ui-fluid">
+      <label>Observação</label>
+      <textarea pInputTextarea rows="5" cols="30" name="observacao"  [(ngModel)]="renegociar.observacao"></textarea>
+    </div>
+
+      <div class="ui-g-6 ui-fluid">
+         <br> <br>
+         <button pButton type="submit" label="Renegociar" (click)="renegociarP()" ></button>
+      </div>
+  </form>
+</p-dialog>
+
+
+<p-dialog header="Confirmar ação" [(visible)]="exibirFormConfirmacao" modal="modal"
+[style]="{width: '400px', height: '300px'}">
+  <form #frmConfirmar="ngForm">
+
+      <div class="ui-g-12 ui-fluid form-group" style="margin-left: 0">
+        <label> {{mensagemConfirmacao}} </label>
+      </div>
+      <div class="ui-g-12 ui-fluid">
+         <br> <br>
+         <div class="ui-g-4 ui-fluid">
+            <button pButton type="submit" label="Sim" (click)="confirmaRecebeParcela('Sim')" class="ui-button-success"></button>
+         </div>
+         <div class="ui-g-4 ui-fluid">
+            <button pButton type="submit" label="Não" (click)="confirmaRecebeParcela('Nao')" class="ui-button-danger"></button>
+         </div>
+      </div>
+  </form>
+</p-dialog>
+
+
+
+
+
+

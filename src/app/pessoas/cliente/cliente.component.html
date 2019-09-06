@@ -1,0 +1,206 @@
+<div class="container">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <h1>Clientes</h1>
+    </div>
+  </div>
+
+  <form #clienteForm="ngForm">
+    <p-tabView>
+      <p-tabPanel header="Principal">
+          <div class="ui-g">
+              <div class="ui-g-12 ui-md-5 ui-fluid">
+                  <label>Nome</label>
+                  <input pInputText type="text" name="nome" [(ngModel)]="cliente.nome"/>
+              </div>
+
+              <div class="ui-g-12 ui-md-3 ui-fluid">
+                  <label>CPF</label>
+                  <p-inputMask name="cpf" mask="999.999.999-99" slotChar=" " [(ngModel)]="cliente.cpf"></p-inputMask>
+              </div>
+
+              <div class="ui-g-12 ui-md-4 ui-fluid">
+                  <label>Nome do comércio</label>
+                  <input pInputText type="text" name="nomeComercio" [(ngModel)]="cliente.nomeComercio"/>
+              </div>
+
+              <div class="ui-g-12 ui-md-5 ui-fluid">
+                  <label>Usuário</label>
+                  <p-dropdown [options]="usuarios" name="usuario" [(ngModel)]="cliente.usuario.id" placeholder="Selecione"></p-dropdown>
+              </div>
+
+              <div class="ui-g-12 ui-md-5 ui-fluid">
+                  <label>Status</label>
+                  <p-dropdown [options]="status" name="status" [(ngModel)]="cliente.status.id" placeholder="Selecione"></p-dropdown>
+              </div>
+
+              <div class="ui-g-12 ui-md-12 ui-fluid">
+                <label>Observação</label>
+                <textarea pInputTextarea rows="5" cols="30" name="observacao"  [(ngModel)]="cliente.observacao"></textarea>
+            </div>
+
+
+              <div class="ui-g-12">
+                  <br>
+                  <button pButton (click)="inicio(0)"  label="Novo"></button>
+                  <button pButton (click)="adicionar()"  style="margin-left: 10px" label="Salvar"></button>
+                  <a pButton style="margin-left: 10px" label="Pesquisar" class="ui-button-secondary" [routerLink]="['/cliente-pesquisa']"></a>
+              </div>
+
+          </div>
+
+      </p-tabPanel>
+      <p-tabPanel header="Endereço" [disabled]="clienteNovo()">
+          <div class="ui-g">
+            <div class="ui-g-12 ui-md-12 ui-fluid">
+                <div class="ui-g">
+                  <div class="ui-g-12 ui-md-2 ui-fluid">
+                      <label>Tipo</label>
+                      <p-dropdown [options]="tipos" name="tipoEndereco" [(ngModel)]="endereco.tipo" placeholder="Selecione"></p-dropdown>
+                  </div>
+                  <div class="ui-g-12 ui-md-2 ui-fluid">
+                      <label>Cidade</label>
+                      <p-dropdown [options]="cidades" name="cidade" [(ngModel)]="endereco.cidade.id" placeholder="Selecione"></p-dropdown>
+                  </div>
+
+                  <div class="ui-g-12 ui-md-3 ui-fluid">
+                    <label>Bairro</label>
+                    <input pInputText type="text" name="bairro" [(ngModel)]="endereco.bairro"/>
+                  </div>
+
+                  <div class="ui-g-12 ui-md-5 ui-fluid">
+                      <label>Rua</label>
+                      <input pInputText type="text" name="rua" [(ngModel)]="endereco.rua"/>
+                  </div>
+
+                  <div class="ui-g-12 ui-md-2 ui-fluid">
+                      <label>Numero</label>
+                      <input pInputText type="text" name="numero" [(ngModel)]="endereco.numero"/>
+                  </div>
+
+                  <div class="ui-g-12 ui-md-2 ui-fluid">
+                    <label>Complemento</label>
+                    <input pInputText type="text" name="complemento" [(ngModel)]="endereco.complemento"/>
+                  </div>
+
+                  <div class="ui-g-12 ui-md-2 ui-fluid">
+                      <label>Cep</label>
+                      <p-inputMask [(ngModel)]="endereco.cep" name ="cep" mask="99999-999" slotChar=" "></p-inputMask>
+                  </div>
+
+                  <div class="ui-g-12 ui-md-5 ui-fluid">
+                    <label>Referência</label>
+                    <input pInputText type="text" name="referencia" [(ngModel)]="endereco.referencia"/>
+                </div>
+
+                  <div class="ui-g-12 ui-md-1">
+                    <br>
+                    <button pButton  style="width: 88px"  (click)="adicionarEndereco(clienteForm)"  label="Adicionar"></button>
+                  </div>
+
+                </div>
+
+            </div>
+
+            <div class="ui-g-12 ui-md-12 ui-fluid">
+
+              <p-table [value]="cliente.enderecos" [responsive]="true">
+                <ng-template pTemplate="header">
+                  <tr style="font-size: 11px">
+                      <th style="width: 10%">Tipo</th>
+                      <th style="width: 10%">Cidade</th>
+                      <th style="width: 10%">Bairro</th>
+                      <th style="width: 20%">Rua</th>
+                      <th style="width: 8%">Número</th>
+                      <th style="width: 10%">Complemento</th>
+                      <th style="width: 9%">CEP</th>
+                      <th style="width: 20%">Referência</th>
+                      <th style="width: 9%"></th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-e>
+                    <tr style="font-size: 11px">
+                        <td style="width: 10%">{{e.tipo}}</td>
+                        <td style="width: 10%">{{e.cidade.nome}}</td>
+                        <td style="width: 10%">{{e.bairro}}</td>
+                        <td style="width: 20%">{{e.rua}}</td>
+                        <td style="width: 8%">{{e.numero}}</td>
+                        <td style="width: 10%">{{e.complemento}}</td>
+                        <td style="width: 9%">{{e.cep}}</td>
+                        <td style="width: 20%">{{e.referencia}}</td>
+                        <td style="width: 9%">
+                           <a pButton icon="pi pi-pencil" (click)="editarEndereco(e)" pTooltip="Editar" tooltipPosition="top"></a>
+                           <a pButton icon="pi pi-trash" (click)="excluirEndereco(e)" pTooltip="Excluir" tooltipPosition="top" style="margin-left: 10px"></a>
+                        </td>
+                      </tr>
+                </ng-template>
+            </p-table>
+
+            </div>
+        </div>
+      </p-tabPanel>
+
+      <p-tabPanel header="Contato" [disabled]="clienteNovo()">
+        <div class="ui-g">
+          <div class="ui-g-12 ui-md-12 ui-fluid">
+                <div class="ui-g-12 ui-md-2 ui-fluid">
+                    <label>Tipo</label>
+                    <p-dropdown [options]="tipos" name="tipoContato" [(ngModel)]="contato.tipo" placeholder="Selecione"></p-dropdown>
+                  </div>
+                <div class="ui-g-12 ui-md-4 ui-fluid">
+                    <label>Email</label>
+                    <input pInputText type="text" name="email" [(ngModel)]="contato.email"/>
+                </div>
+                <div class="ui-g-12 ui-md-2 ui-fluid">
+                    <label>Telefone fixo</label>
+                    <p-inputMask [(ngModel)]="contato.fixo" name ="fixo" mask="(99)9999-9999"></p-inputMask>
+                  </div>
+                <div class="ui-g-12 ui-md-2 ui-fluid">
+                    <label>Telefone Celular</label>
+                    <p-inputMask [(ngModel)]="contato.celular" name ="celular" mask="(99)99999-9999" ></p-inputMask>
+                </div>
+
+              <div class="ui-g-1">
+                  <br>
+                  <button pButton  style="width: 100px" (click)="adicionarContato()" label="Adicionar"></button>
+              </div>
+          </div>
+
+          <div class="ui-g-12 ui-md-12 ui-fluid">
+            <p-table [value]="cliente.contatos"  [responsive]="true">
+              <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 10%">Tipo</th>
+                    <th style="width: 30%">email</th>
+                    <th style="width: 20%">Tel fixo</th>
+                    <th style="width: 20%">Tel celular</th>
+                    <th style="width: 20%"></th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-c>
+                  <tr>
+                      <td style="width: 10%">{{c.tipo}}</td>
+                      <td style="width: 30%">{{c.email}}</td>
+                      <td style="width: 20%">{{c.fixo}}</td>
+                      <td style="width: 20%">{{c.celular}}</td>
+
+                      <td style="width: 20%">
+                         <a pButton icon="pi pi-pencil" (click)="editarContato(c)" pTooltip="Editar" tooltipPosition="top"></a>
+                         <a pButton icon="pi pi-trash" (click)="excluirContato(c.id)" pTooltip="Excluir" tooltipPosition="top" style="margin-left: 10px"></a>
+                      </td>
+                    </tr>
+              </ng-template>
+          </p-table>
+
+
+
+          </div>
+      </div>
+        </p-tabPanel>
+    </p-tabView>
+</form>
+</div>
+
+
+
+

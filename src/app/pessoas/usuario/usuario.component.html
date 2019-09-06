@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <h1>Usuário</h1>
+    </div>
+  </div>
+  <form #usuarioForm="ngForm" (ngSubmit)="adicionar()">
+    <div class="ui-g">
+      <div class="ui-g-4 ui-md-4 ui-fluid form-group">
+          <label>Nome</label>
+          <input pInputText type="text" name="nome" [(ngModel)]="usuario.nome"/>
+      </div>
+      <div class="ui-g-4 ui-md-4 ui-fluid form-group">
+          <label>Tipo</label>
+          <p-dropdown [options]="tiposUsuarios" name="tipo" [(ngModel)]="usuario.tipo.id" placeholder="Selecione"></p-dropdown>
+      </div>
+      <div class="ui-g-12 ui-md-3 ui-fluid">
+          <label>Status</label>
+          <p-dropdown [options]="status" name="status" [(ngModel)]="usuario.status.id" placeholder="Selecione"></p-dropdown>
+      </div>
+
+      <div class="ui-g-4 ui-md-4 ui-fluid form-group">
+          <label>Username</label>
+          <input pInputText type="text" name="usuario" [(ngModel)]="usuario.username"/>
+      </div>
+
+      <div class="ui-g-4 ui-md-4 ui-fluid form-group">
+          <label>Senha</label>
+          <input pInputText type="text" name="senha" [(ngModel)]="usuario.senha"/>
+      </div>
+      <div class="ui-g-4 ui-md-2 ui-fluid">
+          <br>
+          <button pButton label="Salvar" (click) = "adicionar"></button>
+      </div>
+
+    </div>
+  </form>
+
+  <div class="ui-g-12">
+      <p-table [value]="usuarios" [responsive]="true">
+          <ng-template pTemplate="header">
+            <tr>
+                <th class="codigoHeader">Código</th>
+                <th >Nome</th>
+                <th >Status</th>
+                <th class="col-acoes"></th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-u>
+              <tr>
+                  <td class="codigoCampo">{{u.id}}</td>
+                  <td>{{u.nome}}</td>
+                  <td>{{u.status.nome}}</td>
+                  <td>
+                     <a pButton icon="pi pi-pencil" (click)="editar(u)" pTooltip="Editar" tooltipPosition="top"></a>
+                  </td>
+                </tr>
+          </ng-template>
+      </p-table>
+    </div>
+</div>
+

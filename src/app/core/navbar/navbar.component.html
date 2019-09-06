@@ -1,0 +1,26 @@
+<nav class="navbar">
+  <div class="container">
+    <div class="ui-g">
+      <div class="ui-g-12">
+          <a href="javascript:;" class="navbar-toggle" (click)="exibirMenu()"> <i class="pi pi-align-justify"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <ul class="navbar-menu" [hidden] = "!exibeMenu()" (click)="exibirMenu()">
+    <li class="navbar-usuario"></li>
+    <li class="navbar-menuitem"><a routerLink="/emprestimo">Emprestimos</a></li>
+    <li class="navbar-menuitem"><a routerLink="/parcelas">Acompanhamento de parcelas</a></li>
+    <li class="navbar-menuitem"><a routerLink="/estado">Estados</a></li>
+    <li class="navbar-menuitem"><a routerLink="/cidade">Cidades</a></li>
+    <li class="navbar-menuitem"><a routerLink="/cliente">Clientes</a></li>
+    <li class="navbar-menuitem"><a routerLink="/conta">Contas</a></li>
+    <li class="navbar-menuitem"><a routerLink="/tipoEntrada">Tipos de entrada</a></li>
+    <li class="navbar-menuitem"><a routerLink="/entradaRetirada">Entradas e retiradas</a></li>
+    <li class="navbar-menuitem"><a routerLink="/usuarios">Usuário</a></li>
+    <li class="navbar-menuitem"><a routerLink="/alterarSenha">Alterar senha</a></li>
+    <li class="navbar-menuitem"><a href="javascript:;" (click)="logout()">Sair</a></li>
+
+  </ul>
+
+</nav>

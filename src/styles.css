@@ -1,0 +1,53 @@
+/* You can add global styles to this file, and also import other style files */
+body{
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #404c51;
+  font-size: 13px;
+}
+
+label{
+  font-weight: bold;
+  font-size: 13px;
+}
+
+@media (min-width: 1200px){
+  .container {
+    width: 1270px;
+    margin: 0 auto;
+  }
+}
+
+.col-valor-header{
+  width: 120px;
+  text-align: center;
+}
+
+.col-valor-conteudo{
+  text-align: right;
+}
+
+.col-data{
+  width: 120px;
+  text-align: center;
+}
+
+col-nome{
+  width: 120px;
+  text-align: left;
+}
+
+.col-acoes{
+  width: 110px;
+  text-align: center;
+}
+
+.codigoHeadaer{
+  width: 70px;
+  text-align: center;
+}
+
+.codigoCampo{
+  width: 70px;
+  text-align: center;
+}

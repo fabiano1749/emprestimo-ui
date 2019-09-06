@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <h1>Usuário</h1>
+    </div>
+  </div>
+  <form #alteraSenhaForm="ngForm">
+    <div class="ui-g">
+      <div class="ui-g-4 ui-md-4 ui-fluid form-group">
+          <label>Senha</label>
+          <input pInputText type="text" name="senha" [(ngModel)]="senha"/>
+      </div>
+      <div class="ui-g-4 ui-md-2 ui-fluid">
+          <br>
+          <button pButton label="Alterar" (click) = "alterar()"></button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
