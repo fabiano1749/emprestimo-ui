@@ -54,7 +54,7 @@ export class UsuarioComponent implements OnInit {
   }
 
   carregarTiposUsuarios() {
-    return this.usuarioService.consultar()
+    return this.tipoUsuarioService.consultar()
     .then(tipos => {
         this.tiposUsuarios = tipos.map(t => {
           return {label: t.nome , value: t.id};
@@ -79,7 +79,6 @@ export class Usuario {
   senha: string;
   tipo = new TipoUsuario();
   status = new Status();
-
 }
 
 export class TipoUsuario {

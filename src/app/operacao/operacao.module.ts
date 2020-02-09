@@ -27,6 +27,7 @@ import {InputMaskModule} from 'primeng/inputmask';
 import { ParcelaComponent } from './parcela/parcela.component';
 import { PesquisaEmprestimoComponent } from './pesquisa-emprestimo/pesquisa-emprestimo.component';
 import { RouterModule, Routes } from '@angular/router';
+import { ExtratoComponent } from './extrato/extrato.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { RouterModule, Routes } from '@angular/router';
     EntradaRetiradaComponent,
     EmprestimoComponent,
     ParcelaComponent,
-    PesquisaEmprestimoComponent],
+    PesquisaEmprestimoComponent,
+    ExtratoComponent],
   imports: [
     CommonModule,
     InputTextModule,

@@ -49,6 +49,7 @@ export class EmprestimoComponent implements OnInit {
   carregarEmprestimo(id) {
     this.emprestimoService.buscarPorCodigo(id)
     .then(emprestimo => {
+      this.emprestimo = new Emprestimo();
       this.emprestimo =  this.setaDadosEmprestimo(emprestimo);
     });
   }
@@ -73,8 +74,31 @@ export class EmprestimoComponent implements OnInit {
     return emp2;
   }
 
+  setaDadosEmprestimoParaPersistir(emprestimo): Emprestimo {
+    const data = moment(emprestimo.dataOperacao);
+    const emp2 = new Emprestimo();
+    emp2.id = emprestimo.id;
+    emp2.dataOperacao = data.format('YYYY-MM-DD');
+    emp2.valor = emprestimo.valor;
+    emp2.observacao = emprestimo.observacao;
+    emp2.usuario.id = emprestimo.usuario.id;
+    emp2.conta.id = emprestimo.conta.id;
+    emp2.status.id = emprestimo.status.id;
+    emp2.status.nome = emprestimo.status.nome;
+    emp2.jurosValor = emprestimo.jurosValor;
+    emp2.jurosPercentual = emprestimo.jurosPercentual;
+    emp2.quantParcelas = emprestimo.quantParcelas;
+    emp2.intervaloEntreParcelas = emprestimo.intervaloEntreParcelas;
+    emp2.cliente.id = emprestimo.cliente.id;
+    emp2.parcelas = emprestimo.parcelas;
+    return emp2;
+  }
+
+
+
+
   exibirParcelas() {
-    if (this.emprestimo.valor != null && this.emprestimo.jurosValor != null &&
+    if (this.emprestimo.valor != null && this.emprestimo.jurosValor != null && this.emprestimo.dataOperacao != null &&
       this.emprestimo.quantParcelas != null && this.emprestimo.intervaloEntreParcelas != null) {
         this.gerarParcelas();
       }
@@ -106,9 +130,9 @@ export class EmprestimoComponent implements OnInit {
   }
 
   adicionar() {
-    this.ajustaDados();
     this.gerarParcelas();
-    this.emprestimoService.adicionar(this.emprestimo)
+    const emp = this.setaDadosEmprestimoParaPersistir(this.emprestimo);
+    this.emprestimoService.adicionar(emp)
       .then(emprestimo => {
         this.inicio(emprestimo.id);
       });

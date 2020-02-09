@@ -15,7 +15,6 @@ export class AlterarSenhaComponent implements OnInit {
   }
 
   alterar() {
-    console.log(JSON.stringify(this.senha));
     this.usuarioService.alterarSenha(this.senha)
     .then(() => {
       this.senha = '';

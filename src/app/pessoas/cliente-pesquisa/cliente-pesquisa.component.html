@@ -51,8 +51,8 @@
             <ng-template pTemplate="body" let-c>
                 <tr>
                     <td style="width: 30%">{{c.nome}}</td>
-                    <td style="width: 30%">{{c.usuario.nome}}</td>
-                    <td style="width: 10%; text-align: center">{{c.status.nome}}</td>
+                    <td style="width: 30%">{{c.usuario}}</td>
+                    <td style="width: 10%; text-align: center">{{c.status}}</td>
                     <td style="text-align: center">
                       <a pButton icon="pi pi-pencil"  pTooltip="Editar" tooltipPosition="top" [routerLink]="['/cliente', c.id]"></a>
                     </td>

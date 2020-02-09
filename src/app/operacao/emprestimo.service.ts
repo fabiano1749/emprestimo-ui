@@ -56,7 +56,7 @@ pesquisar(filtro: any): Promise<any> {
 
   const url = this.url + '/pesquisa';
 
-  return this.http.get(`${url}?resumo`, { params: params })
+  return this.http.get(`${url}?resumo`, { params })
   .toPromise()
   .then(response => {
     return response;
@@ -69,13 +69,12 @@ buscarPorCodigo(id: number): Promise<any> {
   .then(response => response);
 }
 
-
 recebeParcela(filtro: any): Promise<any> {
   const url = this.url + '/recebeParcela';
   let params = new HttpParams();
   params = params.append('id', filtro.id);
 
-  return this.http.get(`${url}?`, { params: params })
+  return this.http.get(`${url}?`, { params })
   .toPromise()
   .then(response => {
     return response;
@@ -92,11 +91,10 @@ renegociaParcela(renegocia: any): Promise<any> {
   params = params.append('observacao', renegocia.observacao);
   params = params.append('idConta', renegocia.idConta);
 
-  return this.http.get(`${url}?`, { params: params })
+  return this.http.get(`${url}?`, { params })
   .toPromise()
   .then(response => {
     return response;
   });
 }
-
 }

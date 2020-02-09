@@ -37,7 +37,7 @@
                     <th style="text-align: center;  width: 120px;">Data</th>
                     <th style="text-align: center;  width: 120px;">Usuário</th>
                     <th style="text-align: center;  width: 100px;">Status</th>
-                    <th style="text-align: center;  width: 60px;"></th>
+                    <th style="text-align: center;  width: 80px;"></th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-e>
@@ -50,6 +50,7 @@
                       <td style="text-align: center;  width: 100px;">{{e.status}}</td>
                       <td>
                         <a pButton icon="pi pi-pencil"  pTooltip="Editar" tooltipPosition="top" [routerLink]="['/emprestimo', e.id]"></a>
+                        <a pButton icon="pi pi-trash"  pTooltip="Excluir" (click)="excluir(e.id, e.status)" tooltipPosition="top" style="margin-left: 10px"></a>
                       </td>
                   </tr>
               </ng-template>
@@ -57,3 +58,20 @@
         </div>
       </div>
 </div>
+
+<p-dialog header="Atenção" [(visible)]="exibirDialogoStatusNaoAberto" modal="modal"
+[style]="{width: '400px', height: '300px'}">
+
+      <div class="ui-g-12 ui-fluid form-group" style="margin-left: 0">
+        <label> Apenas emprestimos com status Aberto podem ser excluídos! </label>
+        <br> <br>
+      </div>
+
+      <div class="ui-g-4 ui-fluid">
+        <button pButton type="submit" label="OK" (click)="fechaDialogoStatusNaoAberto()" class="ui-button-danger"></button>
+      </div>
+
+</p-dialog>
+
+
+

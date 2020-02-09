@@ -1,7 +1,6 @@
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +30,7 @@ export class ParcelaService {
 
     const url = this.url + '/pesquisa';
 
-    return this.http.get(`${url}?resumo`, { params: params })
+    return this.http.get(`${url}?resumo`, { params })
     .toPromise()
     .then(response => {
       return response;
@@ -58,7 +57,7 @@ export class ParcelaService {
       params = params.append('idStatus', filtro.status);
     }
 
-    return this.http.get(`${url}?`, { params: params })
+    return this.http.get(`${url}?`, { params })
     .toPromise()
     .then(response => {
       return response;
@@ -75,7 +74,7 @@ export class ParcelaService {
     params = params.append('observacao', renegocia.observacao);
     params = params.append('idConta', renegocia.idConta);
 
-    return this.http.get(`${url}?`, { params: params })
+    return this.http.get(`${url}?`, { params })
     .toPromise()
     .then(() => null);
   }
@@ -88,5 +87,32 @@ export class ParcelaService {
     .toPromise()
     .then(response => response);
   }
+
+  relatorio(filtro: any): Promise<any> {
+    const url = this.url + '/relatorioParcela';
+    let params = new HttpParams();
+    if (filtro.idConta) {
+      params = params.append('idConta', filtro.idConta);
+    }
+    if (filtro.cliente) {
+      params = params.append('cliente', filtro.cliente);
+    }
+    if (filtro.inicio) {
+      params = params.append('inicio', filtro.inicio);
+    }
+
+    if (filtro.fim) {
+      params = params.append('fim', filtro.fim);
+    }
+
+    if (filtro.status) {
+      params = params.append('idStatus', filtro.status);
+    }
+
+    return this.http.get(`${url}?`, {params, responseType: 'blob'})
+    .toPromise()
+    .then(response => response);
+  }
+
 
 }

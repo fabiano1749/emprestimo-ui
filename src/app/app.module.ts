@@ -1,3 +1,4 @@
+import { ExtratoComponent } from './operacao/extrato/extrato.component';
 import { AlterarSenhaComponent } from './pessoas/alterar-senha/alterar-senha.component';
 import { PesquisaEmprestimoComponent } from './operacao/pesquisa-emprestimo/pesquisa-emprestimo.component';
 import { ParcelaComponent } from './operacao/parcela/parcela.component';
@@ -48,7 +49,8 @@ const routes: Routes = [
   { path: 'parcelas',  component: ParcelaComponent},
   { path: 'usuarios',  component: UsuarioComponent},
   { path: 'alterarSenha',  component: AlterarSenhaComponent},
-  { path: 'telaInicial',  component: TelaInicialComponent}
+  { path: 'telaInicial',  component: TelaInicialComponent},
+  { path: 'extrato',  component: ExtratoComponent}
 ];
 
 

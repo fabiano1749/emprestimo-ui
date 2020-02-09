@@ -43,6 +43,4 @@ export class UsuarioService {
       .toPromise()
       .then(response => response);
   }
-
-
 }

@@ -15,7 +15,7 @@ export class ClienteService {
   }
 
   consultar(): Promise<any> {
-    return this.http.get(this.url)
+    return this.http.get(this.url + '/pesquisaOrdenada')
     .toPromise()
     .then(response => response);
   }
@@ -61,7 +61,7 @@ pesquisar(filtro: any): Promise<any> {
 
   const url = this.url + '/pesquisa';
 
-  return this.http.get(`${url}?resumo`, { params: params })
+  return this.http.get(`${url}?resumo`, { params })
   .toPromise()
   .then(response => {
     return response;

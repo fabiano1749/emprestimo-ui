@@ -100,6 +100,14 @@ export class ParcelaComponent implements OnInit {
     });
   }
 
+  relatorio() {
+    this.parcelaService.relatorio(this.filtro).
+    then(relatorio => {
+      const url = window.URL.createObjectURL(relatorio);
+      window.open(url);
+    });
+  }
+
   confirmaRecebeParcela(resposta) {
     if (resposta === 'Sim') {
       this.receber();

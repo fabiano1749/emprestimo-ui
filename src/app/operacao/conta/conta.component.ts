@@ -73,6 +73,12 @@ carregarStatus() {
   });
 }
 
+extrato() {
+  const filtro = new Filtro();
+  filtro.idConta = 1;
+  this.contaService.extrato(filtro);
+}
+
 ajustaDados(conta: Conta): Conta {
   const aux = new Conta();
   aux.id = conta.id;
@@ -100,3 +106,10 @@ export class Usuario {
 export class Status {
   id: number;
 }
+
+export class Filtro {
+  inicio: string;
+  fim: string;
+  idConta: number;
+}
+

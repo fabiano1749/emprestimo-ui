@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <h1>Extrato</h1>
+    </div>
+  </div>
+
+  <div class="ui-g">
+      <div class="ui-g-12 ui-md-7 ui-fluid">
+    <div class="ui-g-12 ui-md-3 ui-fluid">
+      <label>Conta</label>
+      <p-dropdown [options]="contas" name="contaR" [(ngModel)]="filtro.idConta"  placeholder="Selecione"></p-dropdown>
+    </div>
+    <div class="ui-g-12 ui-md-3 ui-fluid">
+      <label>Início</label>
+      <p-calendar [(ngModel)]="filtro.inicio" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+    </div>
+    <div class="ui-g-12 ui-md-3 ui-fluid">
+      <label>Fim</label>
+      <p-calendar [(ngModel)]="filtro.fim" dateFormat="dd/mm/yy" [showIcon]="true"></p-calendar>
+    </div>
+
+    <div class="ui-g-12 ui-md-2 ui-fluid">
+      <br>
+      <button pButton label="Gerar" (click)="extrato()" class="ui-button-success" style="margin-left: 10px"></button>
+    </div>
+  </div>
+    <div class="ui-g-12 ui-md-5 ui-fluid">
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label>Entradas</label>
+        <input pInputText  [(ngModel)]="resumo.entradas" type="text" disabled=true />
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label>Saídas</label>
+        <input pInputText [(ngModel)]="resumo.saidas" type="text" disabled=true />
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label>Saldo</label>
+        <input pInputText [(ngModel)]="resumo.saldo" type="text" disabled=true />
+      </div>
+  </div>
+
+  </div>
+
+  <div class="ui-g" >
+    <div class="ui-g-12">
+      <p-table [value]="resumo.itens" [responsive]="true">
+          <ng-template pTemplate="header">
+            <tr>
+                <th>Tipo</th>
+                <th>Conta</th>
+                <th>Origem</th>
+                <th>Data</th>
+                <th>Valor</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-i>
+              <tr>
+                  <td style="text-align: center;">{{i.tipo}}</td>
+                  <td style="text-align: center;">{{i.conta}}</td>
+                  <td style="text-align: center;">{{i.origem}}</td>
+                  <td style="text-align: center;">{{i.data}}</td>
+                  <td style="text-align: center;">{{i.valorFormat}}</td>
+                </tr>
+          </ng-template>
+      </p-table>
+    </div>
+  </div>
+
+
+</div>

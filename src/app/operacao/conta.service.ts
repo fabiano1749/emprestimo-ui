@@ -1,5 +1,5 @@
 import { environment } from 'src/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -36,6 +36,24 @@ statusUsados(): Promise<any> {
   return this.http.get(this.url + '/status')
   .toPromise()
   .then(response => response);
+}
+
+extrato(filtro: any): Promise<any> {
+  const url = 'http://localhost:8080/extrato' + '/extrato';
+  let params = new HttpParams();
+  params = params.append('idConta', filtro.idConta);
+
+  if (filtro.inicio) {
+    params = params.append('inicio', filtro.inicio);
+  }
+
+  if (filtro.fim) {
+    params = params.append('fim', filtro.fim);
+  }
+
+  return this.http.get(`${url}?`, {params})
+  .toPromise()
+  .then(response => console.log(JSON.stringify(response)));
 }
 
 }

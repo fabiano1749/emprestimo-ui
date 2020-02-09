@@ -16,6 +16,8 @@ export class PesquisaEmprestimoComponent implements OnInit {
   fim: any;
   sta: any;
   total: number;
+  exibirDialogoStatusNaoAberto = false;
+
 
   constructor(private emprestimoService: EmprestimoService) { }
 
@@ -65,8 +67,23 @@ export class PesquisaEmprestimoComponent implements OnInit {
         });
     });
   }
-}
 
+  excluir(id: number, status: string) {
+    if (status === 'Aberto') {
+      this.emprestimoService.excluir(id)
+      .then(() => {
+        this.pesquisar();
+      });
+    } else {
+      this.exibirDialogoStatusNaoAberto = true;
+    }
+  }
+
+  fechaDialogoStatusNaoAberto() {
+    this.exibirDialogoStatusNaoAberto = false;
+  }
+
+}
 
 export class Emprestimo {
   id: number;
